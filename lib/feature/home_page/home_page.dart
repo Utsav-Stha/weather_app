@@ -12,7 +12,7 @@ class HomePage extends StatefulWidget {
       NetworkRequest.getCurrentWeatherData(),
       NetworkRequest.getForecastWeatherData(),
     ]);
-    print(a.runtimeType);
+    // print(a.runtimeType);
   }
 
   @override
@@ -20,6 +20,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int count = -1;
+  int count1 = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,69 +121,34 @@ class _HomePageState extends State<HomePage> {
                       height: 100,
                       // width: 80,
                       child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemCount: 5,
-                        itemBuilder:
-                        // [
-                        (context, index) {
-                          print(index);
-                          return AdditionalForecast(
-                            forecastData: forecastData,
-                          );
-                        },
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            print(index);
 
-                          // SizedBox(
-                          //   width: 22,
-                          // ),
-                          // Column(
-                          //   children: [
-                          //     Text((int.parse((forecastData
-                          //                         ?.forecastday?[0]
-                          //                         .hour?[DateTime.now().hour]
-                          //                         .time
-                          //                         ?.split(' ')
-                          //                         .last
-                          //                         .split(':')
-                          //                         .first) ??
-                          //                     '') +
-                          //                 1)
-                          //             .toString() ??
-                          //         ''),
-                          //     SizedBox(
-                          //       height: 8,
-                          //     ),
-                          //     Text(
-                          //         '${forecastData?.forecastday?[0].hour?[DateTime.now().hour].tempC}°C')
-                          //   ],
-                          // ),
-                          // SizedBox(
-                          //   width: 22,
-                          // ),
-                          // Column(
-                          //   children: [
-                          //     Text((int.parse((forecastData
-                          //                         ?.forecastday?[0]
-                          //                         .hour?[
-                          //                             DateTime.now().hour + 1]
-                          //                         .time
-                          //                         ?.split(' ')
-                          //                         .last
-                          //                         .split(':')
-                          //                         .first) ??
-                          //                     '') +
-                          //                 1)
-                          //             .toString() ??
-                          //         ''),
-                          //     SizedBox(
-                          //       height: 8,
-                          //     ),
-                          //     Text(
-                          //         '${forecastData?.forecastday?[0].hour?[DateTime.now().hour + 1].tempC}°C')
-                          //   ],
-                          // ),
-                        // ],
-                      ),
+                            if (count <= 23 &&
+                                (DateTime.now().hour + count) != 24) {
+                              print('before : $count');
+                              var a = AdditionalForecast(
+                                forecastData: forecastData,
+                                count: count,
+                                indexx: 0,
+                              );
+                              count++;
+                              print('after: $count');
+                              return a;
+                            } else {
+                              count = -23;
+                              var a = AdditionalForecast(
+                                forecastData: forecastData,
+                                count: count,
+                                indexx: 1,
+                              );
+                              count++;
+                              return a;
+                            }
+                          }),
                     ),
                   ],
                 );
