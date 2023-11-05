@@ -69,66 +69,72 @@ class _HomePageState extends State<HomePage> {
                       child: Text(
                         '${currentData?.tempC?.ceil()}°C',
                         style: TextStyle(
-                          fontSize: 100.0,
+                          fontSize: 92.0,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
                     ),
                     Center(
-                      child: Container(
-                        height: 140,
-                        width: 140,
-                        child: Image.network(
-                          'https:${currentData?.condition?.icon?.replaceAll('"', '')}',
-                          fit: BoxFit.fill,
+                      child: CircleAvatar(
+                        backgroundColor: Color.fromRGBO(179, 229, 252, 0.4),
+                        radius: 60,
+                        child: Center(
+                          child: Image.network(
+                            'https:${currentData?.condition?.icon?.replaceAll('"', '')}',
+                            fit: BoxFit.fill,
+                          ),
                         ),
                       ),
+                    ),
+                    SizedBox(
+                      height: 4.0,
                     ),
                     Center(
                       child: Text(
                         currentData?.condition?.text ?? '',
                         style: TextStyle(
-                            fontSize: 20.0, fontWeight: FontWeight.w300),
+                            fontSize: 20.0, fontWeight: FontWeight.w400),
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          children: [
-                            Text('Wind'),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            Text('${currentData?.windKph} km/h')
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Text('Humidity'),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            Text('${currentData?.humidity} %')
-                          ],
-                        )
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            children: [
+                              Text('Wind'),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Text('${currentData?.windKph} km/h')
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text('Humidity'),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Text('${currentData?.humidity} %')
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 10,
                     ),
                     SizedBox(
-                      height: 100,
+                      height: 120,
                       // width: 80,
                       child: ListView.builder(
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
-                          itemCount: 5,
+                          itemCount: 8,
                           itemBuilder: (context, index) {
                             print(index);
-
-                            if (count <= 23 &&
-                                (DateTime.now().hour + count) != 24) {
+                            if (DateTime.now().hour + count <=23) {
                               print('before : $count');
                               var a = AdditionalForecast(
                                 forecastData: forecastData,
@@ -139,13 +145,15 @@ class _HomePageState extends State<HomePage> {
                               print('after: $count');
                               return a;
                             } else {
-                              count = -23;
+                              count = -DateTime.now().hour;
+                              print('before : $count');
                               var a = AdditionalForecast(
                                 forecastData: forecastData,
                                 count: count,
                                 indexx: 1,
                               );
                               count++;
+                              print('after: $count');
                               return a;
                             }
                           }),

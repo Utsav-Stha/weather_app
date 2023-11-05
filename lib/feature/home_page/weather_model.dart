@@ -153,8 +153,9 @@ class Hour {
 
   Hour.fromJson(dynamic json) {
     timeEpoch = json['time_epoch'];
-    time = json['time'];
-    tempC = json['temp_c'];
+    time = (int.parse(json['time'].toString().split(' ').last.split(':').first) +1 ).toString();
+
+    tempC = json['temp_c'] ;
     tempF = json['temp_f'];
     isDay = json['is_day'];
     condition = json['condition'] != null ? Condition.fromJson(json['condition']) : null;
