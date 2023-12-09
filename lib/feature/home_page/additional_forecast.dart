@@ -11,8 +11,15 @@ class AdditionalForecast extends StatelessWidget {
   final Forecast? forecastData;
   final int count;
   final int indexx;
+
   @override
   Widget build(BuildContext context) {
+    // int date = (int.parse((forecastData?.forecastday?[indexx]
+    //     .hour?[DateTime.now().hour + count].time) ??
+    //     ''));
+    String date = (forecastData?.forecastday?[indexx]
+        .hour?[DateTime.now().hour+count].time) ??
+        '';
     print(indexx);
     return Padding(
       padding: const EdgeInsets.only(left: 8.0),
@@ -27,18 +34,33 @@ class AdditionalForecast extends StatelessWidget {
               // Finally everything is converted into string
               // Text((forecastData?.forecastday?[indexx].hour?[DateTime.now().hour].time) ?? ''),
 
-              Text((int.parse((forecastData?.forecastday?[indexx]
-                  .hour?[DateTime.now().hour + count].time
-                  )??
-                  '') )
-                  .toString() ??
-                  ''),
+              // Text(
+              //   date >
+              //           12 && date < 24
+              //       ? (date - 12)
+              //               .toString() + ' PM' ??
+              //           ''
+              //       :
+              //       date  == 24 ?
+              //       (date -12).toString() + ' AM'?? ''
+              //           :
+              //             date.toString() + ' AM' ??
+              //           '',
+              //   style: TextStyle(
+              //     fontSize: 18.0,
+              //   ),
+              // ),
+              Text(date ,
+            style: TextStyle(
+                  fontSize: 18.0,
+                ),
+              ),
               SizedBox(
                 height: 4,
               ),
               Image.network(
-                  'https:${forecastData?.forecastday?[indexx].hour?[DateTime.now().hour+count].condition?.icon}',
-              width: 50,
+                'https:${forecastData?.forecastday?[indexx].hour?[DateTime.now().hour + count].condition?.icon}',
+                width: 50,
                 height: 30,
               ),
               Text(

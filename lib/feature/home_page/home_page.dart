@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/feature/home_page/additional_forecast.dart';
+import 'package:weather_app/feature/search_page/search_page.dart';
 import 'package:weather_app/network_request/network_request.dart';
 import 'package:weather_app/feature/home_page/weather_model.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key, this.locationName}) : super(key: key);
+  String? locationName ;
 
   getData() async {
     var a = await Future.wait([
@@ -20,10 +22,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int count = -1;
+  int count = 0;
   int count1 = 0;
+
+  List city = ['Kathmandu', 'Pokhara', 'Mumbai', 'Delhi', 'London'];
+  void changeCity(String cityName) {
+    setState(() {
+      widget.locationName = cityName;
+      // widget.getData();
+    });
+  }
   @override
   Widget build(BuildContext context) {
+    print(widget.locationName);
+    NetworkRequest.setCity(widget.locationName?? 'kathmandu');
+
+
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: () {
@@ -62,7 +76,42 @@ class _HomePageState extends State<HomePage> {
                       title: Text(locationData?.name ?? ''),
                       leading: Icon(Icons.menu_rounded),
                       actions: [
-                        Icon(Icons.search_rounded),
+                        // Padding(
+                        //   padding: const EdgeInsets.only(right: 8.0),
+                        //   child: IconButton(
+                        //     onPressed: () {
+                        //       Navigator.push(context, MaterialPageRoute(
+                        //         builder: (context) {
+                        //           return SearchPage();
+                        //         },
+                        //       ));
+                        //     },
+                        //     icon: Icon(Icons.search_rounded),
+                        //   ),
+                        // ),
+                        PopupMenuButton<int>(
+                          itemBuilder: (context) {
+                            return [
+                              PopupMenuItem<int>(
+                                value: 0,
+                                onTap: () {
+                                  setState(() {
+                                    widget.locationName = city[0];
+                                  });
+                                },
+                                child: Text(city[0]),
+                              ),
+                              PopupMenuItem<int>(
+                                onTap: () {
+                                  setState(() {
+                                    widget.locationName = city[1];
+                                  });
+                                },
+                                child: Text(city[1]),
+                              ),
+                            ];
+                          },
+                        )
                       ],
                     ),
                     Center(
@@ -134,7 +183,7 @@ class _HomePageState extends State<HomePage> {
                           itemCount: 8,
                           itemBuilder: (context, index) {
                             print(index);
-                            if (DateTime.now().hour + count <=23) {
+                            if (DateTime.now().hour + count <= 23) {
                               print('before : $count');
                               var a = AdditionalForecast(
                                 forecastData: forecastData,
@@ -156,19 +205,26 @@ class _HomePageState extends State<HomePage> {
                               print('after: $count');
                               return a;
                             }
+
                           }),
                     ),
                   ],
                 );
               } else if (snapshot.hasError) {
-                return Center(child: Text(snapshot.error.toString()));
+                return Center(
+                  child: Text(
+                    snapshot.error.toString(),
+                  ),
+                );
               } else {
-                return CircularProgressIndicator();
+                return Center(child: CircularProgressIndicator());
               }
             },
           ),
         ),
       ),
+
     );
+
   }
 }

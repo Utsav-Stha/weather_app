@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class WeatherModel {
   WeatherModel({
       this.location, 
@@ -151,9 +153,11 @@ class Hour {
       this.gustKph, 
       this.uv,});
 
+
   Hour.fromJson(dynamic json) {
+    DateTime dateTime = DateTime(2023, 1, 1, (int.parse(json['time'].toString().split(' ').last.split(':').first)), 0);
     timeEpoch = json['time_epoch'];
-    time = (int.parse(json['time'].toString().split(' ').last.split(':').first) +1 ).toString();
+    time = DateFormat.j().format(dateTime).toString();
 
     tempC = json['temp_c'] ;
     tempF = json['temp_f'];
